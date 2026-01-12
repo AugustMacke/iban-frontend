@@ -1,0 +1,23 @@
+{
+  "title": "IBAN validator",
+  "technicalIssue": "IBAN validation is currently not possible. A technical issue has occurred. Please try again later.",
+  "country": "Country",
+  "bank": {
+    "bank": "Bank",
+    "unknownBank": "Unknown Bank"
+  },
+  "iban": {
+    "detailsTitle": "IBAN Details",
+    "enterIban": "enter IBAN",
+    "format": "IBAN format",
+    "ibanLengthInfo": "IBAN length",
+    "generalIssuesTitle": "The IBAN has the following issues:"
+  },
+  "generalIssues": {
+    "MAX_LENGTH_EXCEEDED": "Maximum lenght exceeded",
+    "INVALID_COUNTRY_CODE": "Invalid country code",
+    "WRONG_CHECKSUM_FORMAT": "Checksum must be a number",
+    "UNKNOWN_BANK_CODE": "The bank code that is part of the IBAN is unknown"
+  }
+}
+

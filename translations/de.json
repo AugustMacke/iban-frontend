@@ -1,0 +1,22 @@
+{
+  "title": "IBAN-Validator",
+  "technicalIssue": "Die IBAN kann nicht validiert werden. Es ist ein technisches Problem aufgetreten. Bitte versuchen Sie es später erneut.",
+  "country": "Land",
+  "bank": {
+    "bank": "Bank",
+    "unknownBank": "Unbekannte Bank"
+  },
+  "iban": {
+    "detailsTitle": "IBAN-Details",
+    "enterIban": "IBAN eingeben",
+    "format": "IBAN-Format",
+    "ibanLengthInfo": "IBAN-Länge",
+    "generalIssuesTitle": "Die IBAN hat folgende Fehler:"
+  },
+  "generalIssues": {
+    "MAX_LENGTH_EXCEEDED": "Maximale Länge überschritten",
+    "INVALID_COUNTRY_CODE": "Ungültiger Ländercode",
+    "WRONG_CHECKSUM_FORMAT": "Die Prüfsumme muss eine Zahl sein",
+    "UNKNOWN_BANK_CODE": "Der in der IBAN enthaltene Bankcode ist unbekannt"
+  }
+}
