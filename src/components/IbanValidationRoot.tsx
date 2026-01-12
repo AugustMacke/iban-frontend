@@ -7,8 +7,8 @@ import {useTranslation} from "react-i18next";
 import CheckIcon from '@mui/icons-material/Check';
 import Box from '@mui/material/Box';
 import Typography from "@mui/material/Typography";
+import {useFormatIbanGroups} from '../hooks/useFormatIbanGroups';
 import {IbanLengthText} from "./IbanLengthText";
-
 
 export const IbanValidationRoot = () => {
     const { t } = useTranslation();
@@ -16,6 +16,9 @@ export const IbanValidationRoot = () => {
     const [validateParams, setValidateParams] = useState<{ iban: string } | undefined>(undefined);
     const { data, error } = useValidateIban(validateParams);
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const formatIbanGroups = useFormatIbanGroups();
+    const inputRef = useRef<HTMLInputElement>(null);
+    const caretPosRef = useRef<number | null>(null);
 
     useEffect(() => {
         if (timerRef.current) {
@@ -32,6 +35,13 @@ export const IbanValidationRoot = () => {
             }
         };
     }, [iban, validateParams?.iban]);
+
+    useEffect(() => {
+        if (inputRef.current && caretPosRef.current !== null) {
+            inputRef.current.setSelectionRange(caretPosRef.current, caretPosRef.current);
+            caretPosRef.current = null;
+        }
+    });
 
     const ibanIsValid = (() => {
         return Array.isArray(data?.generalIssues) &&
@@ -50,6 +60,24 @@ export const IbanValidationRoot = () => {
         return 'primary';
     });
 
+    const handleIbanChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const input = e.target;
+        const newFormatted = input.value;
+        const caret = input.selectionStart ?? newFormatted.length;
+        const leftSpaces = newFormatted.slice(0, caret).split('').filter(c => c === ' ').length;
+        const rawCaret = caret - leftSpaces;
+        const rawValue = newFormatted.replaceAll(' ', '');
+        setIban(rawValue);
+        const formatted = formatIbanGroups(rawValue);
+        let newCaret = rawCaret;
+        let count = 0;
+        for (let i = 0; i < formatted.length && count < rawCaret; i++) {
+            if (formatted[i] !== ' ') count++;
+            newCaret = i + 1;
+        }
+        caretPosRef.current = newCaret;
+    };
+
     return (
         <>
             <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
@@ -57,11 +85,12 @@ export const IbanValidationRoot = () => {
                     id="outlined-basic"
                     label={t('iban.enterIban')}
                     variant="outlined"
-                    value={iban}
-                    onChange={e => setIban(e.target.value)}
+                    value={formatIbanGroups(iban)}
+                    onChange={handleIbanChange}
                     sx={{ marginBottom: 2, width: '21em' }}
                     helperText={<IbanLengthText ibanLength={iban.length} desiredIbanLength={data?.iban?.country?.ibanLength} />}
                     color={ibanTextFieldColor()}
+                    inputRef={inputRef}
                 />
                 {ibanIsValid() && <CheckIcon sx={{ color: 'green', ml: -4, my: 2 }} />}
             </Box>
